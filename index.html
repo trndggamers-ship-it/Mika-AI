@@ -42,9 +42,9 @@
     <style>
         body { font-family: 'Segoe UI', sans-serif; }
         
-        /* Premium Floating Glass Effect */
+        /* Floating Glass Navbar */
         .glass-nav {
-            background: rgba(15, 23, 42, 0.6); /* Slightly darker for better contrast */
+            background: rgba(15, 23, 42, 0.7);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -55,6 +55,13 @@
             background: rgba(30, 41, 59, 0.4);
             backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            background: rgba(30, 41, 59, 0.6);
+            transform: translateY(-5px);
+            border-color: rgba(16, 185, 129, 0.3);
         }
 
         .gradient-text {
@@ -66,7 +73,7 @@
             box-shadow: 0 0 80px -20px rgba(16, 185, 129, 0.4);
         }
         
-        /* Hide scrollbar for cleaner look */
+        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #020617; }
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
@@ -91,9 +98,11 @@
                 
                 <div class="hidden md:block">
                     <div class="flex items-center space-x-8">
-                        <a href="#features" class="text-sm font-medium text-gray-300 hover:text-primary transition hover:scale-105">Features</a>
-                        <a href="#about" class="text-sm font-medium text-gray-300 hover:text-primary transition hover:scale-105">About Dev</a>
-                        <a href="https://buymeacoffee.com/" target="_blank" class="bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-black px-6 py-3 rounded-xl font-bold transition transform hover:scale-105 shadow-lg shadow-yellow-500/20 flex items-center">
+                        <a href="#about-soft" class="text-sm font-medium text-gray-300 hover:text-primary transition">About</a>
+                        <a href="#features" class="text-sm font-medium text-gray-300 hover:text-primary transition">Features</a>
+                        <a href="#requirements" class="text-sm font-medium text-gray-300 hover:text-primary transition">Specs</a>
+                        <a href="#contact" class="text-sm font-medium text-gray-300 hover:text-primary transition">Contact</a>
+                        <a href="https://www.buymeacoffee.com/Mika_AI" target="_blank" class="bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-black px-6 py-3 rounded-xl font-bold transition transform hover:scale-105 shadow-lg shadow-yellow-500/20 flex items-center">
                             <i class="fas fa-coffee mr-2"></i>Donate
                         </a>
                     </div>
@@ -109,111 +118,175 @@
             </div>
             
             <h1 class="animate-fade-in-up text-5xl md:text-7xl font-extrabold tracking-tight mb-8 leading-tight" style="animation-delay: 0.1s;">
-                Your Private, Offline <br>
-                <span class="gradient-text">AI Powerhouse.</span>
+                Mika AI – Your Ultimate <br>
+                <span class="gradient-text">Offline AI Assistant.</span>
             </h1>
             
             <p class="animate-fade-in-up mt-6 text-xl text-gray-300 max-w-3xl mx-auto mb-12 leading-relaxed" style="animation-delay: 0.2s;">
-                Chat, Generate Images, and Create Videos—completely <strong>Offline & Free</strong>. Optimized to run smoothly on standard CPUs without expensive hardware.
+                Create unlimited Images, Videos, and Chat smartly without internet. Optimized for standard PCs. <strong>100% Free & Secure.</strong>
             </p>
             
             <div class="animate-fade-in-up flex justify-center gap-5 flex-col sm:flex-row mb-20" style="animation-delay: 0.3s;">
-                <a href="#" class="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-300 bg-primary rounded-full hover:bg-green-500 focus:outline-none shadow-xl shadow-primary/30 hover:shadow-primary/50 hover:-translate-y-1">
+                <a href="https://drive.google.com/file/d/1vkcZ2SwqPo5jz1rkP_F1lla3odz-9BcX/view?usp=sharing" target="_blank" class="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-300 bg-primary rounded-full hover:bg-green-500 focus:outline-none shadow-xl shadow-primary/30 hover:shadow-primary/50 hover:-translate-y-1">
                     <i class="fab fa-windows mr-3 text-2xl"></i>
-                    Download for Windows
+                    Download Mika AI v1.0
                     <div class="absolute -top-3 -right-3 bg-red-500 text-white text-xs px-3 py-1 rounded-full font-bold animate-bounce-slow shadow-sm">
-                        v1.0 Free
+                        Free
                     </div>
                 </a>
                 
-                <a href="#about" class="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-gray-300 transition-all duration-300 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:text-white backdrop-blur-md hover:-translate-y-1">
-                    Meet the Developer
+                <a href="https://www.buymeacoffee.com/Mika_AI" target="_blank" class="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-gray-300 transition-all duration-300 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:text-white backdrop-blur-md hover:-translate-y-1">
+                    Support the Dream
                 </a>
             </div>
 
             <div class="animate-fade-in-up relative max-w-5xl mx-auto rounded-[2.5rem] p-3 bg-gradient-to-b from-white/10 to-transparent backdrop-blur-xl border border-white/10 hero-glow" style="animation-delay: 0.5s;">
-                <img src="dashboard.png" alt="Mika AI Interface Dashboard" class="relative rounded-[2rem] shadow-2xl w-full border border-white/5">
-                <p class="mt-6 text-sm font-medium text-gray-400">Requires Windows 10/11 • No GPU Required (CPU Mode)</p>
+                <img src="dashboard.png" alt="Mika AI Dashboard" class="relative rounded-[2rem] shadow-2xl w-full border border-white/5">
             </div>
         </div>
     </div>
 
-    <div id="features" class="py-32 relative z-10">
+    <div id="about-soft" class="py-20 bg-black/20">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold text-white mb-6">What is Mika AI?</h2>
+            <div class="glass-card p-10 rounded-3xl">
+                <p class="text-lg text-gray-300 leading-relaxed mb-4">
+                    Mika AI is a powerful, all-in-one Artificial Intelligence software designed for Windows. Unlike other AI tools that require expensive subscriptions or heavy cloud usage, <strong>Mika AI runs locally on your computer</strong>.
+                </p>
+                <p class="text-lg text-gray-300 leading-relaxed">
+                    It combines the power of <span class="text-primary">Llama 3</span> (for chat) and <span class="text-blue-400">Stable Diffusion</span> (for art) to give you a premium experience for free. Whether you are a student, creator, or researcher, Mika AI is built to empower you.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="features" class="py-24 relative z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-20">
-                <h2 class="text-4xl font-bold text-white sm:text-5xl mb-6">Why Choose Mika AI?</h2>
-                <p class="text-xl text-gray-400 max-w-2xl mx-auto">Everything you need in a modern AI assistant, running locally on your machine.</p>
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white sm:text-5xl mb-4">Key Features</h2>
+                <p class="text-gray-400">Everything you need in one software</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <div class="glass-card p-10 rounded-[2.5rem] hover:bg-white/5 transition duration-500 hover:-translate-y-2 group">
-                    <div class="w-16 h-16 bg-blue-500/20 text-blue-400 rounded-3xl flex items-center justify-center text-3xl mb-8 group-hover:scale-110 transition">
-                        <i class="fas fa-microchip"></i>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="glass-card p-8 rounded-[2rem]">
+                    <div class="w-14 h-14 bg-blue-500/20 text-blue-400 rounded-2xl flex items-center justify-center text-2xl mb-6">
+                        <i class="fas fa-comments"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-white mb-4">CPU Optimized</h3>
-                    <p class="text-gray-400 leading-relaxed">Built specifically for students and users without high-end GPUs. Enjoy AI smoothly on standard laptops.</p>
+                    <h3 class="text-xl font-bold text-white mb-3">Smart Chat (Llama 3)</h3>
+                    <p class="text-gray-400 text-sm">Intelligent conversation, coding help, and creative writing. Completely offline.</p>
                 </div>
 
-                <div class="glass-card p-10 rounded-[2.5rem] hover:bg-white/5 transition duration-500 hover:-translate-y-2 group">
-                    <div class="w-16 h-16 bg-purple-500/20 text-purple-400 rounded-3xl flex items-center justify-center text-3xl mb-8 group-hover:scale-110 transition">
-                        <i class="fas fa-shield-alt"></i>
+                <div class="glass-card p-8 rounded-[2rem]">
+                    <div class="w-14 h-14 bg-purple-500/20 text-purple-400 rounded-2xl flex items-center justify-center text-2xl mb-6">
+                        <i class="fas fa-paint-brush"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-white mb-4">100% Private</h3>
-                    <p class="text-gray-400 leading-relaxed">Your data, your rules. Chats and images are generated locally. Nothing ever leaves your PC.</p>
+                    <h3 class="text-xl font-bold text-white mb-3">AI Image Generation</h3>
+                    <p class="text-gray-400 text-sm">Turn text into stunning images instantly using Stable Diffusion v1.5. Unlimited generations.</p>
                 </div>
 
-                <div class="glass-card p-10 rounded-[2.5rem] hover:bg-white/5 transition duration-500 hover:-translate-y-2 group">
-                    <div class="w-16 h-16 bg-primary/20 text-primary rounded-3xl flex items-center justify-center text-3xl mb-8 group-hover:scale-110 transition">
-                        <i class="fas fa-wand-magic-sparkles"></i>
+                <div class="glass-card p-8 rounded-[2rem]">
+                    <div class="w-14 h-14 bg-red-500/20 text-red-400 rounded-2xl flex items-center justify-center text-2xl mb-6">
+                        <i class="fas fa-video"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-white mb-4">All-in-One Magic</h3>
-                    <p class="text-gray-400 leading-relaxed">Llama 3 for intelligent chat, Stable Diffusion for stunning art, and SVD for video—all in one place.</p>
+                    <h3 class="text-xl font-bold text-white mb-3">Video Generation (Beta)</h3>
+                    <p class="text-gray-400 text-sm">Convert your static images into short motion videos (Image-to-Video).</p>
                 </div>
-            </div>
-        </div>
-    </div>
 
-    <div id="about" class="py-32 relative z-10">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div class="glass-card p-12 md:p-16 rounded-[3rem] border border-white/10 shadow-2xl relative overflow-hidden">
-                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-primary/30 blur-[100px] rounded-full pointer-events-none"></div>
-                
-                <div class="relative">
-                    <div class="w-24 h-24 mx-auto bg-gradient-to-br from-gray-700 to-gray-900 rounded-full flex items-center justify-center p-1 border-4 border-primary/50 shadow-xl overflow-hidden">
-                        <span class="text-4xl">👨‍💻</span>
+                <div class="glass-card p-8 rounded-[2rem]">
+                    <div class="w-14 h-14 bg-green-500/20 text-green-400 rounded-2xl flex items-center justify-center text-2xl mb-6">
+                        <i class="fas fa-globe"></i>
                     </div>
-                    <h2 class="text-3xl font-bold mt-6 mb-2 text-white">Meet the Creator</h2>
-                    <h3 class="text-2xl gradient-text font-bold mb-8">Kazi Abir</h3>
-                    
-                    <blockquote class="text-xl text-gray-300 mb-10 leading-relaxed italic relative px-8">
-                        <i class="fas fa-quote-left text-primary/30 absolute top-0 left-0 text-4xl -translate-y-1/2"></i>
-                        "I am a college student, and this is my first major project. Due to the lack of a powerful GPU, I optimized this to run smoothly on standard computers. I want to be <strong>'Infinite within Limits'</strong>."
-                        <i class="fas fa-quote-right text-primary/30 absolute bottom-0 right-0 text-4xl translate-y-1/2"></i>
-                    </blockquote>
-                    
-                    <p class="text-gray-400 mb-10 font-medium">
-                        Your support can help me upgrade my resources and build the future of Mika AI.
-                    </p>
-                    
-                    <a href="https://buymeacoffee.com/" target="_blank" class="inline-flex items-center bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-black font-bold py-4 px-10 rounded-full text-lg transition transform hover:scale-105 shadow-xl shadow-yellow-500/30">
-                        <img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="Buy me a coffee" class="w-7 h-7 mr-3">
-                        Support My Journey
-                    </a>
+                    <h3 class="text-xl font-bold text-white mb-3">Deep Research</h3>
+                    <p class="text-gray-400 text-sm">Need real-time info? Switch to Research Mode to fetch live data from the web via DuckDuckGo.</p>
+                </div>
+
+                <div class="glass-card p-8 rounded-[2rem]">
+                    <div class="w-14 h-14 bg-yellow-500/20 text-yellow-400 rounded-2xl flex items-center justify-center text-2xl mb-6">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Document Analysis</h3>
+                    <p class="text-gray-400 text-sm">Upload PDF files and chat with them. Summarize or ask questions from your documents.</p>
+                </div>
+
+                <div class="glass-card p-8 rounded-[2rem]">
+                    <div class="w-14 h-14 bg-gray-500/20 text-gray-300 rounded-2xl flex items-center justify-center text-2xl mb-6">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">100% Offline & Private</h3>
+                    <p class="text-gray-400 text-sm">Your data stays on your PC. No hidden servers, no tracking. Privacy first.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer class="bg-darker py-12 border-t border-white/5 relative z-10">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <div class="mb-6 flex items-center justify-center gap-2 opacity-50 hover:opacity-100 transition">
-                <img src="logo.png" alt="Logo" class="w-6 h-6 grayscale">
-                <span class="font-bold text-lg text-gray-300">Mika AI</span>
+    <div id="requirements" class="py-20">
+        <div class="max-w-5xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-white text-center mb-12">System Requirements</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="glass-card p-8 rounded-3xl border-l-4 border-yellow-500">
+                    <h3 class="text-xl font-bold text-yellow-500 mb-6">Minimum Requirements</h3>
+                    <ul class="space-y-4 text-gray-300">
+                        <li class="flex items-center"><i class="fab fa-windows w-8 text-gray-500"></i> Windows 10 or 11 (64-bit)</li>
+                        <li class="flex items-center"><i class="fas fa-microchip w-8 text-gray-500"></i> Intel Core i5 (8th Gen) / AMD Ryzen 5</li>
+                        <li class="flex items-center"><i class="fas fa-memory w-8 text-gray-500"></i> 8 GB RAM</li>
+                        <li class="flex items-center"><i class="fas fa-hdd w-8 text-gray-500"></i> 10 GB Free Space (SSD)</li>
+                    </ul>
+                </div>
+
+                <div class="glass-card p-8 rounded-3xl border-l-4 border-primary">
+                    <h3 class="text-xl font-bold text-primary mb-6">Recommended (Best Performance)</h3>
+                    <ul class="space-y-4 text-gray-300">
+                        <li class="flex items-center"><i class="fas fa-rocket w-8 text-primary"></i> RAM: 16 GB or higher</li>
+                        <li class="flex items-center"><i class="fas fa-gamepad w-8 text-primary"></i> GPU: NVIDIA Graphics Card (4GB VRAM)</li>
+                        <li class="text-sm text-gray-500 mt-4 ml-8">* GPU is optional but recommended for faster video generation.</li>
+                    </ul>
+                </div>
             </div>
-            <p class="text-gray-500">&copy; 2025 Mika AI. Built with determination by <span class="text-primary">Kazi Abir</span>.</p>
-            <p class="text-sm text-gray-600 mt-4">Disclaimer: Performance depends on your hardware capabilities. Open-source models used.</p>
         </div>
-    </footer>
+    </div>
+
+    <div class="py-16 bg-black/30">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <i class="fas fa-user-shield text-5xl text-gray-400 mb-6"></i>
+            <h2 class="text-3xl font-bold text-white mb-4">Your Privacy is Our Priority</h2>
+            <p class="text-gray-400 max-w-2xl mx-auto mb-8">
+                Mika AI processes 99% of tasks offline using your computer's hardware. We do not collect, store, or sell your chat history, generated images, or personal files. All generated content is saved locally in your 'generated_outputs' folder.
+            </p>
+        </div>
+    </div>
+
+    <div id="contact" class="pt-20 pb-10 bg-darker border-t border-white/5">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold text-white mb-8">Contact & Support</h2>
+            
+            <div class="flex flex-wrap justify-center gap-6 mb-12">
+                <a href="mailto:trndggamers@gmail.com" class="glass-card px-8 py-4 rounded-full flex items-center gap-3 text-white hover:text-primary transition">
+                    <i class="fas fa-envelope"></i> trndggamers@gmail.com
+                </a>
+                <a href="https://wa.me/YOUR_NUMBER" target="_blank" class="glass-card px-8 py-4 rounded-full flex items-center gap-3 text-white hover:text-green-500 transition">
+                    <i class="fab fa-whatsapp text-xl"></i> Chat on WhatsApp
+                </a>
+            </div>
+
+            <div class="glass-card p-8 rounded-3xl max-w-2xl mx-auto mb-16 bg-gradient-to-r from-gray-900 to-gray-800">
+                <p class="text-gray-300 mb-6">"This is a student project built with passion. If you love Mika AI, consider buying me a coffee to support future updates!"</p>
+                <a href="https://www.buymeacoffee.com/Mika_AI" target="_blank" class="inline-flex items-center bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-8 rounded-full transition transform hover:scale-105">
+                    <img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="Buy me a coffee" class="w-6 h-6 mr-2">
+                    Buy Me a Coffee
+                </a>
+            </div>
+
+            <div class="text-gray-600 text-sm border-t border-gray-800 pt-8">
+                <p>&copy; 2026 Mika AI. All Rights Reserved.</p>
+                <p class="mt-2">Developed by <span class="text-gray-400">Kazi Abir</span></p>
+                <div class="mt-4 space-x-4">
+                    <a href="#" class="hover:text-white transition">Download</a> | 
+                    <a href="#" class="hover:text-white transition">Privacy Policy</a> | 
+                    <a href="#contact" class="hover:text-white transition">Contact</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
