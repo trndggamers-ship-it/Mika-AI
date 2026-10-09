@@ -1,331 +1,744 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="dark scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mika AI - Infinite within Limits</title>
+    <title>Mika AI — Your Offline-First AI Assistant for Windows</title>
+    <meta name="description" content="Mika AI is a free, local-first AI assistant for Windows powered by Llama 3 and Stable Diffusion, now expanding with Cloud API integrations such as the Anthropic Claude API for advanced cloud-backed features.">
+    <meta name="theme-color" content="#020617">
     <link rel="icon" href="logo.png" type="image/png">
+
+    <meta property="og:title" content="Mika AI — Your Offline-First AI Assistant">
+    <meta property="og:description" content="Chat, generate images and video locally on your own PC. Free, private, and now hybrid with Cloud API integrations.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mika-ai.xyz">
+    <meta property="og:image" content="https://mika-ai.xyz/dashboard.png">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <script>
+        (function () {
+            try {
+                var stored = localStorage.getItem('mika-theme');
+                if (stored === 'light') {
+                    document.documentElement.classList.remove('dark');
+                } else {
+                    document.documentElement.classList.add('dark');
+                }
+            } catch (e) {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-BBY76S5SD7"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-BBY76S5SD7');
     </script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Segoe UI', 'system-ui', 'sans-serif'],
+                    },
                     colors: {
-                        primary: '#10b981', 
+                        primary: '#10b981',
+                        'primary-deep': '#059669',
                         dark: '#0f172a',
                         darker: '#020617',
                         card: '#1e293b'
                     },
                     animation: {
                         'bounce-slow': 'bounce 3s infinite',
-                        'blob': 'blob 20s infinite alternate', 
-                        'fade-in-up': 'fadeInUp 1s ease-out forwards',
+                        'blob': 'blob 22s infinite alternate',
+                        'fade-in-up': 'fadeInUp 0.9s ease-out forwards',
+                        'float': 'float 6s ease-in-out infinite',
+                        'shimmer': 'shimmer 3s linear infinite',
+                        'pulse-ring': 'pulseRing 2.5s ease-out infinite',
                     },
                     keyframes: {
                         blob: {
                             '0%': { transform: 'translate(0px, 0px) scale(1)' },
                             '33%': { transform: 'translate(50px, -50px) scale(1.2)' },
-                            '66%': { transform: 'translate(-30px, 40px) scale(0.8)' },
+                            '66%': { transform: 'translate(-30px, 40px) scale(0.85)' },
                             '100%': { transform: 'translate(0px, 0px) scale(1)' },
                         },
                         fadeInUp: {
                             'from': { opacity: '0', transform: 'translateY(30px)' },
                             'to': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-12px)' },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-200% center' },
+                            '100%': { backgroundPosition: '200% center' },
+                        },
+                        pulseRing: {
+                            '0%': { transform: 'scale(0.9)', opacity: '0.7' },
+                            '70%': { transform: 'scale(1.5)', opacity: '0' },
+                            '100%': { transform: 'scale(1.5)', opacity: '0' },
                         }
+                    },
+                    boxShadow: {
+                        'glow': '0 0 80px -20px rgba(16, 185, 129, 0.45)',
+                        'soft': '0 20px 50px -25px rgba(2, 6, 23, 0.25)',
                     }
                 }
             }
         }
     </script>
+
     <style>
-        body { font-family: 'Segoe UI', sans-serif; }
-        
-        /* Floating Glass Navbar */
+        html { -webkit-text-size-adjust: 100%; }
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color .4s ease, color .4s ease;
+        }
+
+        /* ---------- Anchor offset for the floating navbar ---------- */
+        [id] { scroll-margin-top: 130px; }
+
+        /* ---------- Glass surfaces (theme aware) ---------- */
         .glass-nav {
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(22px) saturate(180%);
+            -webkit-backdrop-filter: blur(22px) saturate(180%);
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            box-shadow: 0 12px 40px -16px rgba(15, 23, 42, 0.22);
+            transition: background .4s ease, border-color .4s ease, box-shadow .4s ease;
         }
-        
+        .dark .glass-nav {
+            background: rgba(15, 23, 42, 0.68);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 12px 44px -14px rgba(0, 0, 0, 0.6);
+        }
+
         .glass-card {
-            background: rgba(30, 41, 59, 0.4);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
+            position: relative;
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(18px) saturate(160%);
+            -webkit-backdrop-filter: blur(18px) saturate(160%);
+            border: 1px solid rgba(15, 23, 42, 0.07);
+            box-shadow: 0 18px 44px -28px rgba(15, 23, 42, 0.3);
+            transition: transform .45s cubic-bezier(.2,.8,.2,1), background .4s ease, border-color .4s ease, box-shadow .45s ease;
         }
-
+        .dark .glass-card {
+            background: rgba(30, 41, 59, 0.42);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            box-shadow: 0 18px 50px -30px rgba(0, 0, 0, 0.8);
+        }
         .glass-card:hover {
-            background: rgba(30, 41, 59, 0.6);
-            transform: translateY(-5px);
-            border-color: rgba(16, 185, 129, 0.3);
+            transform: translateY(-6px);
+            border-color: rgba(16, 185, 129, 0.45);
+            box-shadow: 0 26px 60px -30px rgba(16, 185, 129, 0.35);
+        }
+        .dark .glass-card:hover {
+            background: rgba(30, 41, 59, 0.62);
+            box-shadow: 0 26px 70px -34px rgba(16, 185, 129, 0.35);
         }
 
+        /* Subtle top highlight line on cards */
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(16,185,129,.5), transparent);
+            opacity: 0;
+            transition: opacity .4s ease;
+        }
+        .glass-card:hover::before { opacity: 1; }
+
+        /* ---------- Typography accents ---------- */
         .gradient-text {
-            background: linear-gradient(to right, #10b981, #3b82f6);
+            background: linear-gradient(100deg, #10b981, #3b82f6 55%, #8b5cf6);
+            background-size: 200% auto;
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: shimmer 6s linear infinite;
         }
-        .hero-glow {
-            box-shadow: 0 0 80px -20px rgba(16, 185, 129, 0.4);
+        .hero-glow { box-shadow: 0 0 90px -24px rgba(16, 185, 129, 0.35); }
+
+        /* ---------- Scroll reveal ---------- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(34px);
+            transition: opacity .8s cubic-bezier(.2,.8,.2,1), transform .8s cubic-bezier(.2,.8,.2,1);
+            will-change: opacity, transform;
         }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #020617; }
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+        .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+        /* ---------- Nav underline micro-interaction ---------- */
+        .nav-link { position: relative; }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            left: 0; bottom: -6px;
+            width: 100%; height: 2px;
+            border-radius: 2px;
+            background: linear-gradient(90deg, #10b981, #3b82f6);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .35s cubic-bezier(.2,.8,.2,1);
+        }
+        .nav-link:hover::after, .nav-link.active::after { transform: scaleX(1); }
+
+        /* ---------- Theme toggle knob ---------- */
+        .theme-knob {
+            transition: transform .45s cubic-bezier(.2,.8,.2,1), background .4s ease;
+        }
+        .dark .theme-knob { transform: translateX(26px); }
+
+        /* ---------- Buttons ---------- */
+        .btn-primary {
+            background-image: linear-gradient(110deg, #10b981, #059669 50%, #0ea5e9);
+            background-size: 200% auto;
+            transition: background-position .6s ease, transform .3s ease, box-shadow .3s ease;
+        }
+        .btn-primary:hover { background-position: right center; transform: translateY(-3px); }
+
+        /* ---------- Scrollbar ---------- */
+        ::-webkit-scrollbar { width: 9px; }
+        ::-webkit-scrollbar-track { background: #e2e8f0; }
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 6px; }
+        .dark ::-webkit-scrollbar-track { background: #020617; }
+        .dark ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 6px; }
         ::-webkit-scrollbar-thumb:hover { background: #10b981; }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
+            .reveal { opacity: 1; transform: none; }
+        }
     </style>
 </head>
-<body class="bg-darker text-white overflow-x-hidden selection:bg-primary/30">
 
+<body class="bg-slate-50 text-slate-900 dark:bg-darker dark:text-white overflow-x-hidden selection:bg-primary/30 selection:text-slate-900 dark:selection:text-white">
+
+    <!-- ===================== AMBIENT BACKGROUND ===================== -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-        <div class="absolute top-0 -left-40 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] animate-blob"></div>
-        <div class="absolute bottom-0 -right-40 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[120px] animate-blob" style="animation-delay: 5s;"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[120px] animate-blob" style="animation-delay: 10s;"></div>
+        <div class="absolute top-0 -left-40 w-[520px] h-[520px] bg-primary/25 dark:bg-primary/20 rounded-full blur-[130px] animate-blob"></div>
+        <div class="absolute bottom-0 -right-40 w-[520px] h-[520px] bg-blue-500/20 dark:bg-blue-600/20 rounded-full blur-[130px] animate-blob" style="animation-delay: 5s;"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[640px] h-[640px] bg-purple-500/10 dark:bg-purple-600/10 rounded-full blur-[130px] animate-blob" style="animation-delay: 10s;"></div>
+        <div class="absolute inset-0 opacity-[0.035] dark:opacity-[0.05]" style="background-image: linear-gradient(rgba(100,116,139,.6) 1px, transparent 1px), linear-gradient(90deg, rgba(100,116,139,.6) 1px, transparent 1px); background-size: 56px 56px;"></div>
     </div>
 
-    <nav class="fixed top-5 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 glass-nav rounded-2xl transition-all duration-300">
-        <div class="px-6 sm:px-8">
-            <div class="flex items-center justify-between h-20">
-                <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo(0,0)">
-                    <img src="logo.png" alt="Mika AI Logo" class="w-10 h-10 rounded-lg shadow-lg hover:rotate-12 transition transform duration-300">
-                    <span class="font-bold text-2xl tracking-wide text-white">Mika AI</span>
+    <!-- ===================== NAVBAR ===================== -->
+    <nav id="navbar" class="fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 glass-nav rounded-2xl">
+        <div class="px-5 sm:px-8">
+            <div class="flex items-center justify-between h-[72px]">
+
+                <a href="#top" class="flex items-center gap-3 group" aria-label="Mika AI home">
+                    <img src="logo.png" alt="Mika AI Logo" class="w-10 h-10 rounded-xl shadow-lg group-hover:rotate-[10deg] group-hover:scale-105 transition-transform duration-300">
+                    <span class="font-extrabold text-xl sm:text-2xl tracking-tight text-slate-900 dark:text-white">Mika AI</span>
+                </a>
+
+                <div class="hidden lg:flex items-center gap-7">
+                    <a href="#about" class="nav-link text-sm font-semibold text-slate-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition">About</a>
+                    <a href="#features" class="nav-link text-sm font-semibold text-slate-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition">Features</a>
+                    <a href="#requirements" class="nav-link text-sm font-semibold text-slate-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition">Requirements</a>
+                    <a href="#products" class="text-sm font-bold text-amber-600 dark:text-yellow-400 hover:text-amber-700 dark:hover:text-yellow-300 transition border border-amber-400/40 dark:border-yellow-500/30 px-3 py-1.5 rounded-full bg-amber-400/10 dark:bg-yellow-500/10">Products</a>
+                    <a href="#contact" class="nav-link text-sm font-semibold text-slate-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition">Contact</a>
                 </div>
-                
-                <div class="hidden md:block">
-                    <div class="flex items-center space-x-6">
-                        <a href="#about-soft" class="text-sm font-medium text-gray-300 hover:text-primary transition">About</a>
-                        <a href="#features" class="text-sm font-medium text-gray-300 hover:text-primary transition">Features</a>
-                        <a href="#products" class="text-sm font-bold text-yellow-400 hover:text-yellow-300 transition border border-yellow-500/30 px-3 py-1 rounded-full bg-yellow-500/10">Products</a>
-                        <a href="#contact" class="text-sm font-medium text-gray-300 hover:text-primary transition">Contact</a>
-                        <a href="https://www.buymeacoffee.com/Mika_AI" target="_blank" class="bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-black px-6 py-3 rounded-xl font-bold transition transform hover:scale-105 shadow-lg shadow-yellow-500/20 flex items-center">
-                            <i class="fas fa-coffee mr-2"></i>Donate
-                        </a>
-                    </div>
+
+                <div class="flex items-center gap-2 sm:gap-3">
+
+                    <!-- Theme toggle -->
+                    <button id="themeToggle" type="button" role="switch" aria-checked="true" aria-label="Toggle light and dark mode"
+                        class="relative w-[56px] h-[30px] rounded-full bg-slate-200 dark:bg-slate-700/70 border border-slate-300/70 dark:border-white/10 flex items-center px-[3px] transition-colors duration-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/70">
+                        <span class="theme-knob w-[24px] h-[24px] rounded-full bg-white dark:bg-slate-900 shadow-md flex items-center justify-center">
+                            <i class="fas fa-sun text-[11px] text-amber-500 dark:hidden"></i>
+                            <i class="fas fa-moon text-[11px] text-primary hidden dark:block"></i>
+                        </span>
+                    </button>
+
+                    <a href="https://www.buymeacoffee.com/Mika_AI" target="_blank" rel="noopener"
+                       class="hidden sm:inline-flex items-center bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-900 px-5 py-2.5 rounded-xl text-sm font-bold transition transform hover:scale-105 shadow-lg shadow-amber-500/25">
+                        <i class="fas fa-mug-hot mr-2"></i>Donate
+                    </a>
+
+                    <button id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false"
+                        class="lg:hidden w-10 h-10 rounded-xl flex items-center justify-center text-slate-700 dark:text-gray-200 border border-slate-300/70 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-white/5 transition">
+                        <i id="menuIcon" class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile menu -->
+            <div id="mobileMenu" class="lg:hidden hidden pb-5 border-t border-slate-200/70 dark:border-white/10 mt-1 pt-4">
+                <div class="flex flex-col gap-1">
+                    <a href="#about" class="mobile-link px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 dark:text-gray-200 hover:bg-slate-100 dark:hover:bg-white/5 transition">About</a>
+                    <a href="#features" class="mobile-link px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 dark:text-gray-200 hover:bg-slate-100 dark:hover:bg-white/5 transition">Features</a>
+                    <a href="#requirements" class="mobile-link px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 dark:text-gray-200 hover:bg-slate-100 dark:hover:bg-white/5 transition">Requirements</a>
+                    <a href="#products" class="mobile-link px-4 py-3 rounded-xl text-sm font-semibold text-amber-600 dark:text-yellow-400 hover:bg-amber-50 dark:hover:bg-yellow-500/10 transition">Products</a>
+                    <a href="#privacy" class="mobile-link px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 dark:text-gray-200 hover:bg-slate-100 dark:hover:bg-white/5 transition">Privacy</a>
+                    <a href="#contact" class="mobile-link px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 dark:text-gray-200 hover:bg-slate-100 dark:hover:bg-white/5 transition">Contact</a>
+                    <a href="https://www.buymeacoffee.com/Mika_AI" target="_blank" rel="noopener" class="mobile-link mt-2 px-4 py-3 rounded-xl text-sm font-bold text-center bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-900">
+                        <i class="fas fa-mug-hot mr-2"></i>Support Mika AI
+                    </a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <div class="relative pt-44 pb-20 sm:pt-52 sm:pb-32 overflow-hidden">
+    <!-- ===================== HERO ===================== -->
+    <header id="top" class="relative pt-36 pb-20 sm:pt-44 sm:pb-28">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <div class="animate-fade-in-up inline-block px-4 py-2 mb-6 text-xs font-bold tracking-widest text-primary uppercase bg-primary/10 rounded-full border border-primary/20 backdrop-blur-md">
-                Infinite within Limits 🚀
+
+            <div class="animate-fade-in-up inline-flex items-center gap-2 px-4 py-2 mb-7 text-[11px] sm:text-xs font-bold tracking-[0.18em] uppercase text-primary-deep dark:text-primary bg-primary/10 rounded-full border border-primary/25 backdrop-blur-md">
+                <span class="relative flex w-2 h-2">
+                    <span class="absolute inline-flex w-full h-full rounded-full bg-primary animate-pulse-ring"></span>
+                    <span class="relative inline-flex w-2 h-2 rounded-full bg-primary"></span>
+                </span>
+                Infinite within Limits
             </div>
-            
-            <h1 class="animate-fade-in-up text-5xl md:text-7xl font-extrabold tracking-tight mb-8 leading-tight" style="animation-delay: 0.1s;">
-                Mika AI – Your Ultimate <br>
-                <span class="gradient-text">Offline AI Assistant.</span>
+
+            <h1 class="animate-fade-in-up text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-7 leading-[1.08]" style="animation-delay: .1s;">
+                Mika AI — Your Ultimate
+                <span class="block mt-2 gradient-text">Offline AI Assistant.</span>
             </h1>
-            
-            <p class="animate-fade-in-up mt-6 text-xl text-gray-300 max-w-3xl mx-auto mb-12 leading-relaxed" style="animation-delay: 0.2s;">
-                Create unlimited Images, Videos, and Chat smartly without internet. Optimized for standard PCs. <strong>100% Free & Secure.</strong>
+
+            <p class="animate-fade-in-up text-lg sm:text-xl text-slate-600 dark:text-gray-300 max-w-3xl mx-auto mb-5 leading-relaxed" style="animation-delay: .2s;">
+                Create unlimited images, videos and intelligent conversations &mdash; entirely on your own machine, with no internet required. Optimized for standard PCs. <strong class="text-slate-900 dark:text-white">100% free &amp; private.</strong>
             </p>
-            
-            <div class="animate-fade-in-up flex justify-center gap-5 flex-col sm:flex-row mb-20" style="animation-delay: 0.3s;">
-                <a href="https://drive.google.com/file/d/1vkcZ2SwqPo5jz1rkP_F1lla3odz-9BcX/view?usp=sharing" target="_blank" class="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-300 bg-primary rounded-full hover:bg-green-500 focus:outline-none shadow-xl shadow-primary/30 hover:shadow-primary/50 hover:-translate-y-1">
-                    <i class="fab fa-windows mr-3 text-2xl"></i>
+
+            <p class="animate-fade-in-up text-sm text-slate-500 dark:text-gray-500 mb-10" style="animation-delay: .26s;">
+                Local-first by default &middot; Optional Cloud API integrations (Anthropic Claude) for advanced features
+            </p>
+
+            <div class="animate-fade-in-up flex justify-center gap-4 flex-col sm:flex-row mb-14 px-2" style="animation-delay: .32s;">
+                <a href="https://drive.google.com/file/d/1vkcZ2SwqPo5jz1rkP_F1lla3odz-9BcX/view?usp=sharing" target="_blank" rel="noopener"
+                   class="btn-primary group relative inline-flex items-center justify-center px-8 py-4 text-base sm:text-lg font-bold text-white rounded-full shadow-xl shadow-primary/30 hover:shadow-primary/50 focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/40">
+                    <i class="fab fa-windows mr-3 text-xl"></i>
                     Download Mika AI v1.0
-                    <div class="absolute -top-3 -right-3 bg-red-500 text-white text-xs px-3 py-1 rounded-full font-bold animate-bounce-slow shadow-sm">
-                        Free
+                    <span class="absolute -top-3 -right-3 bg-rose-500 text-white text-[11px] px-3 py-1 rounded-full font-bold animate-bounce-slow shadow-lg">Free</span>
+                </a>
+
+                <a href="#features"
+                   class="inline-flex items-center justify-center px-8 py-4 text-base sm:text-lg font-semibold rounded-full transition-all duration-300 text-slate-700 dark:text-gray-200 bg-white/70 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:bg-white dark:hover:bg-white/10 backdrop-blur-md hover:-translate-y-1">
+                    Explore Features <i class="fas fa-arrow-down ml-3 text-sm"></i>
+                </a>
+            </div>
+
+            <div class="animate-fade-in-up flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm text-slate-500 dark:text-gray-400 mb-16" style="animation-delay: .4s;">
+                <span><i class="fas fa-circle-check text-primary mr-2"></i>No subscription</span>
+                <span><i class="fas fa-circle-check text-primary mr-2"></i>No account required</span>
+                <span><i class="fas fa-circle-check text-primary mr-2"></i>Runs on 8 GB RAM</span>
+                <span><i class="fas fa-circle-check text-primary mr-2"></i>Windows 10 &amp; 11</span>
+            </div>
+
+            <div class="animate-fade-in-up relative max-w-5xl mx-auto rounded-[2.5rem] p-2 sm:p-3 bg-gradient-to-b from-white/60 dark:from-white/10 to-transparent backdrop-blur-xl border border-slate-200/70 dark:border-white/10 hero-glow" style="animation-delay: .5s;">
+                <img src="dashboard.png" alt="Mika AI dashboard interface" loading="lazy" class="relative rounded-[2rem] shadow-2xl w-full border border-slate-200/60 dark:border-white/5">
+            </div>
+        </div>
+    </header>
+
+    <!-- ===================== ABOUT ===================== -->
+    <section id="about" class="py-20 sm:py-24 bg-slate-100/60 dark:bg-black/20 border-y border-slate-200/70 dark:border-white/5">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12 reveal">
+                <p class="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3">About the platform</p>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">What is Mika AI?</h2>
+            </div>
+
+            <div class="glass-card p-7 sm:p-10 rounded-[2rem] reveal">
+                <p class="text-base sm:text-lg text-slate-600 dark:text-gray-300 leading-relaxed mb-5">
+                    Mika AI is a powerful, all-in-one artificial intelligence suite built for Windows. Unlike tools that depend on expensive subscriptions and constant cloud usage, <strong class="text-slate-900 dark:text-white">Mika AI runs locally on your own computer</strong> &mdash; your data never has to leave your device.
+                </p>
+                <p class="text-base sm:text-lg text-slate-600 dark:text-gray-300 leading-relaxed mb-5">
+                    It combines <span class="font-semibold text-primary">Llama 3</span> for conversation, reasoning and code with <span class="font-semibold text-blue-600 dark:text-blue-400">Stable Diffusion</span> for image and video generation, delivering a premium creative workflow at zero cost. Whether you are a student, creator or researcher, Mika AI is built to empower you.
+                </p>
+                <p class="text-base sm:text-lg text-slate-600 dark:text-gray-300 leading-relaxed">
+                    Local execution is the foundation, not the ceiling. Mika AI is evolving into a <strong class="text-slate-900 dark:text-white">hybrid AI platform</strong>: alongside the on-device Llama 3 and Stable Diffusion engines, we are integrating <span class="font-semibold text-primary">Cloud API</span> providers &mdash; beginning with the <span class="font-semibold text-primary">Anthropic Claude API</span> &mdash; to deliver advanced reasoning, long-context document analysis and agentic workflows that exceed consumer hardware limits. Users choose the right engine per task: stay fully offline for privacy and zero cost, or enable cloud-backed intelligence on demand.
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-9 pt-8 border-t border-slate-200/80 dark:border-white/10">
+                    <div class="text-center">
+                        <p class="text-2xl sm:text-3xl font-extrabold gradient-text">99%</p>
+                        <p class="text-xs sm:text-sm text-slate-500 dark:text-gray-400 mt-1">Tasks processed on-device</p>
                     </div>
-                </a>
-                
-                <a href="https://www.buymeacoffee.com/Mika_AI" target="_blank" class="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-gray-300 transition-all duration-300 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:text-white backdrop-blur-md hover:-translate-y-1">
-                    Support the Dream
-                </a>
-            </div>
-
-            <div class="animate-fade-in-up relative max-w-5xl mx-auto rounded-[2.5rem] p-3 bg-gradient-to-b from-white/10 to-transparent backdrop-blur-xl border border-white/10 hero-glow" style="animation-delay: 0.5s;">
-                <img src="dashboard.png" alt="Mika AI Dashboard" class="relative rounded-[2rem] shadow-2xl w-full border border-white/5">
-            </div>
-        </div>
-    </div>
-
-    <div id="about-soft" class="py-20 bg-black/20">
-        <div class="max-w-4xl mx-auto px-4 text-center">
-            <h2 class="text-3xl font-bold text-white mb-6">What is Mika AI?</h2>
-            <div class="glass-card p-10 rounded-3xl">
-                <p class="text-lg text-gray-300 leading-relaxed mb-4">
-                    Mika AI is a powerful, all-in-one Artificial Intelligence software designed for Windows. Unlike other AI tools that require expensive subscriptions or heavy cloud usage, <strong>Mika AI runs locally on your computer</strong>.
-                </p>
-                <p class="text-lg text-gray-300 leading-relaxed">
-                    It combines the power of <span class="text-primary">Llama 3</span> (for chat) and <span class="text-blue-400">Stable Diffusion</span> (for art) to give you a premium experience for free. Whether you are a student, creator, or researcher, Mika AI is built to empower you.
-                </p>
+                    <div class="text-center">
+                        <p class="text-2xl sm:text-3xl font-extrabold gradient-text">$0</p>
+                        <p class="text-xs sm:text-sm text-slate-500 dark:text-gray-400 mt-1">Subscription cost, forever</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-2xl sm:text-3xl font-extrabold gradient-text">Hybrid</p>
+                        <p class="text-xs sm:text-sm text-slate-500 dark:text-gray-400 mt-1">Local engines + Cloud APIs</p>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div id="features" class="py-24 relative z-10">
+    <!-- ===================== FEATURES ===================== -->
+    <section id="features" class="py-20 sm:py-28 relative z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-white sm:text-5xl mb-4">Key Features</h2>
-                <p class="text-gray-400">Everything you need in one software</p>
+            <div class="text-center mb-14 reveal">
+                <p class="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3">Capabilities</p>
+                <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4">Key Features</h2>
+                <p class="text-slate-500 dark:text-gray-400 max-w-xl mx-auto">Everything you need in one lightweight application &mdash; with cloud power available when you want it.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="glass-card p-8 rounded-[2rem]">
-                    <div class="w-14 h-14 bg-blue-500/20 text-blue-400 rounded-2xl flex items-center justify-center text-2xl mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+
+                <article class="glass-card p-7 sm:p-8 rounded-[2rem] reveal">
+                    <div class="w-14 h-14 bg-blue-500/15 text-blue-600 dark:text-blue-400 rounded-2xl flex items-center justify-center text-2xl mb-6">
                         <i class="fas fa-comments"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-3">Smart Chat (Llama 3)</h3>
-                    <p class="text-gray-400 text-sm">Intelligent conversation, coding help, and creative writing. Completely offline.</p>
-                </div>
+                    <h3 class="text-lg sm:text-xl font-bold mb-3">Smart Chat (Llama 3)</h3>
+                    <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed">Intelligent conversation, coding assistance and creative writing powered by Llama 3 &mdash; completely offline and unlimited.</p>
+                </article>
 
-                <div class="glass-card p-8 rounded-[2rem]">
-                    <div class="w-14 h-14 bg-purple-500/20 text-purple-400 rounded-2xl flex items-center justify-center text-2xl mb-6">
+                <article class="glass-card p-7 sm:p-8 rounded-[2rem] reveal" style="transition-delay: .07s;">
+                    <div class="w-14 h-14 bg-purple-500/15 text-purple-600 dark:text-purple-400 rounded-2xl flex items-center justify-center text-2xl mb-6">
                         <i class="fas fa-paint-brush"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-3">AI Image Generation</h3>
-                    <p class="text-gray-400 text-sm">Turn text into stunning images instantly using Stable Diffusion v1.5. Unlimited generations.</p>
-                </div>
+                    <h3 class="text-lg sm:text-xl font-bold mb-3">AI Image Generation</h3>
+                    <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed">Turn text into stunning visuals instantly with Stable Diffusion v1.5. No credits, no watermarks, no generation limits.</p>
+                </article>
 
-                <div class="glass-card p-8 rounded-[2rem]">
-                    <div class="w-14 h-14 bg-red-500/20 text-red-400 rounded-2xl flex items-center justify-center text-2xl mb-6">
+                <article class="glass-card p-7 sm:p-8 rounded-[2rem] reveal" style="transition-delay: .14s;">
+                    <div class="w-14 h-14 bg-rose-500/15 text-rose-600 dark:text-red-400 rounded-2xl flex items-center justify-center text-2xl mb-6">
                         <i class="fas fa-video"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-3">Video Generation (Beta)</h3>
-                    <p class="text-gray-400 text-sm">Convert your static images into short motion videos (Image-to-Video).</p>
-                </div>
+                    <h3 class="text-lg sm:text-xl font-bold mb-3">Video Generation <span class="text-[10px] align-middle uppercase tracking-wider bg-rose-500/15 text-rose-600 dark:text-red-400 px-2 py-0.5 rounded-full ml-1">Beta</span></h3>
+                    <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed">Convert static images into short motion clips with the built-in image-to-video pipeline.</p>
+                </article>
 
-                <div class="glass-card p-8 rounded-[2rem]">
-                    <div class="w-14 h-14 bg-green-500/20 text-green-400 rounded-2xl flex items-center justify-center text-2xl mb-6">
+                <article class="glass-card p-7 sm:p-8 rounded-[2rem] reveal">
+                    <div class="w-14 h-14 bg-emerald-500/15 text-emerald-600 dark:text-green-400 rounded-2xl flex items-center justify-center text-2xl mb-6">
                         <i class="fas fa-globe"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-3">Deep Research</h3>
-                    <p class="text-gray-400 text-sm">Need real-time info? Switch to Research Mode to fetch live data from the web via DuckDuckGo.</p>
-                </div>
+                    <h3 class="text-lg sm:text-xl font-bold mb-3">Deep Research</h3>
+                    <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed">Ask complex questions and receive structured, in-depth answers with sources whenever you are connected.</p>
+                </article>
 
-                <div class="glass-card p-8 rounded-[2rem]">
-                    <div class="w-14 h-14 bg-yellow-500/20 text-yellow-400 rounded-2xl flex items-center justify-center text-2xl mb-6">
-                        <i class="fas fa-file-pdf"></i>
+                <article class="glass-card p-7 sm:p-8 rounded-[2rem] reveal ring-1 ring-primary/25" style="transition-delay: .07s;">
+                    <div class="w-14 h-14 bg-primary/15 text-primary rounded-2xl flex items-center justify-center text-2xl mb-6">
+                        <i class="fas fa-cloud-arrow-up"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-3">Document Analysis</h3>
-                    <p class="text-gray-400 text-sm">Upload PDF files and chat with them. Summarize or ask questions from your documents.</p>
-                </div>
+                    <h3 class="text-lg sm:text-xl font-bold mb-3">Hybrid Cloud AI <span class="text-[10px] align-middle uppercase tracking-wider bg-primary/15 text-primary px-2 py-0.5 rounded-full ml-1">v1.1</span></h3>
+                    <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed">Local by default &mdash; or opt into Cloud API integrations such as the <span class="font-semibold text-primary">Anthropic Claude API</span> for deeper reasoning, long-context document analysis and agentic task execution.</p>
+                </article>
 
-                <div class="glass-card p-8 rounded-[2rem]">
-                    <div class="w-14 h-14 bg-gray-500/20 text-gray-300 rounded-2xl flex items-center justify-center text-2xl mb-6">
-                        <i class="fas fa-lock"></i>
+                <article class="glass-card p-7 sm:p-8 rounded-[2rem] reveal" style="transition-delay: .14s;">
+                    <div class="w-14 h-14 bg-amber-500/15 text-amber-600 dark:text-yellow-400 rounded-2xl flex items-center justify-center text-2xl mb-6">
+                        <i class="fas fa-shield-halved"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-3">100% Offline & Private</h3>
-                    <p class="text-gray-400 text-sm">Your data stays on your PC. No hidden servers, no tracking. Privacy first.</p>
-                </div>
+                    <h3 class="text-lg sm:text-xl font-bold mb-3">Private by Default</h3>
+                    <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed">No accounts and no prompt tracking. Your chats, images and files never leave your PC unless you explicitly enable a cloud feature.</p>
+                </article>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div id="products" class="py-20 relative z-10">
-        <div class="max-w-4xl mx-auto px-4 text-center">
-            <h2 class="text-3xl font-bold text-white mb-10">More from Kazi Abir</h2>
-            
-            <div class="glass-card p-12 rounded-[2.5rem] border border-primary/20 hover:border-primary transition transform hover:scale-105 group relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-r from-purple-900/40 to-pink-900/40 opacity-0 group-hover:opacity-100 transition duration-500"></div>
-                
+    <!-- ===================== PRODUCTS ===================== -->
+    <section id="products" class="py-20 sm:py-24 bg-slate-100/60 dark:bg-black/20 border-y border-slate-200/70 dark:border-white/5">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+            <div class="mb-10 reveal">
+                <p class="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3">Also by the founder</p>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">More from Kazi Abir</h2>
+            </div>
+
+            <div class="glass-card p-9 sm:p-12 rounded-[2.5rem] group relative overflow-hidden reveal">
+                <div class="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-pink-500/10 dark:from-purple-900/30 dark:to-pink-900/30 opacity-0 group-hover:opacity-100 transition duration-700"></div>
+
                 <div class="relative z-10">
-                    <div class="w-20 h-20 mx-auto bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center text-3xl text-white mb-6 shadow-lg shadow-purple-500/30">
+                    <div class="w-20 h-20 mx-auto bg-gradient-to-br from-purple-500 to-pink-500 rounded-3xl flex items-center justify-center text-3xl text-white mb-7 shadow-xl shadow-purple-500/30 animate-float">
                         <i class="fas fa-layer-group"></i>
                     </div>
-                    <h3 class="text-4xl font-bold text-white mb-4">Zerixa Studio</h3>
-                    <p class="text-xl text-gray-300 mb-8 max-w-lg mx-auto">Discover my latest project! A new platform for creative innovation.</p>
-                    
-                    <a href="https://trndggamers-ship-it.github.io/zerixa/" target="_blank" class="inline-flex items-center px-10 py-4 text-lg font-bold text-white bg-gradient-to-r from-purple-600 to-pink-600 rounded-full hover:shadow-xl hover:shadow-purple-500/40 transition">
-                        Visit Zerixa Studio <i class="fas fa-external-link-alt ml-3"></i>
+                    <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4">Zerixa Studio</h3>
+                    <p class="text-base sm:text-xl text-slate-600 dark:text-gray-300 mb-8 max-w-lg mx-auto leading-relaxed">Discover the latest project &mdash; a new platform built for creative innovation.</p>
+
+                    <a href="https://trndggamers-ship-it.github.io/zerixa/" target="_blank" rel="noopener"
+                       class="inline-flex items-center px-9 py-4 text-base sm:text-lg font-bold text-white bg-gradient-to-r from-purple-600 to-pink-600 rounded-full hover:shadow-xl hover:shadow-purple-500/40 hover:-translate-y-1 transition-all duration-300">
+                        Visit Zerixa Studio <i class="fas fa-arrow-up-right-from-square ml-3 text-sm"></i>
                     </a>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div id="requirements" class="py-20">
-        <div class="max-w-5xl mx-auto px-4">
-            <h2 class="text-3xl font-bold text-white text-center mb-12">System Requirements</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="glass-card p-8 rounded-3xl border-l-4 border-yellow-500">
-                    <h3 class="text-xl font-bold text-yellow-500 mb-6">Minimum Requirements</h3>
-                    <ul class="space-y-4 text-gray-300">
-                        <li class="flex items-center"><i class="fab fa-windows w-8 text-gray-500"></i> Windows 10 or 11 (64-bit)</li>
-                        <li class="flex items-center"><i class="fas fa-microchip w-8 text-gray-500"></i> Intel Core i5 (8th Gen) / AMD Ryzen 5</li>
-                        <li class="flex items-center"><i class="fas fa-memory w-8 text-gray-500"></i> 8 GB RAM</li>
-                        <li class="flex items-center"><i class="fas fa-hdd w-8 text-gray-500"></i> 10 GB Free Space (SSD)</li>
+    <!-- ===================== REQUIREMENTS ===================== -->
+    <section id="requirements" class="py-20 sm:py-24">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12 reveal">
+                <p class="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3">Before you install</p>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">System Requirements</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+                <div class="glass-card p-7 sm:p-8 rounded-[2rem] border-l-4 border-l-amber-500 reveal">
+                    <h3 class="text-lg sm:text-xl font-bold text-amber-600 dark:text-yellow-500 mb-6">Minimum Requirements</h3>
+                    <ul class="space-y-4 text-sm sm:text-base text-slate-600 dark:text-gray-300">
+                        <li class="flex items-center"><i class="fab fa-windows w-8 text-slate-400 dark:text-gray-500"></i> Windows 10 or 11 (64-bit)</li>
+                        <li class="flex items-center"><i class="fas fa-microchip w-8 text-slate-400 dark:text-gray-500"></i> Intel Core i5 (8th Gen) / AMD Ryzen 5</li>
+                        <li class="flex items-center"><i class="fas fa-memory w-8 text-slate-400 dark:text-gray-500"></i> 8 GB RAM</li>
+                        <li class="flex items-center"><i class="fas fa-hard-drive w-8 text-slate-400 dark:text-gray-500"></i> 10 GB free space (SSD)</li>
                     </ul>
                 </div>
 
-                <div class="glass-card p-8 rounded-3xl border-l-4 border-primary">
-                    <h3 class="text-xl font-bold text-primary mb-6">Recommended (Best Performance)</h3>
-                    <ul class="space-y-4 text-gray-300">
+                <div class="glass-card p-7 sm:p-8 rounded-[2rem] border-l-4 border-l-primary reveal" style="transition-delay: .08s;">
+                    <h3 class="text-lg sm:text-xl font-bold text-primary mb-6">Recommended (Best Performance)</h3>
+                    <ul class="space-y-4 text-sm sm:text-base text-slate-600 dark:text-gray-300">
                         <li class="flex items-center"><i class="fas fa-rocket w-8 text-primary"></i> RAM: 16 GB or higher</li>
-                        <li class="flex items-center"><i class="fas fa-gamepad w-8 text-primary"></i> GPU: NVIDIA Graphics Card (4GB VRAM)</li>
-                        <li class="text-sm text-gray-500 mt-4 ml-8">* GPU is optional but recommended for faster video generation.</li>
+                        <li class="flex items-center"><i class="fas fa-gamepad w-8 text-primary"></i> GPU: NVIDIA graphics card (4 GB VRAM)</li>
+                        <li class="flex items-center"><i class="fas fa-wifi w-8 text-primary"></i> Internet connection for optional Cloud API features</li>
+                        <li class="text-xs sm:text-sm text-slate-400 dark:text-gray-500 pt-2 pl-8">* A GPU is optional, but recommended for faster video generation.</li>
                     </ul>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div class="py-16 bg-black/30">
-        <div class="max-w-4xl mx-auto px-4 text-center">
-            <i class="fas fa-user-shield text-5xl text-gray-400 mb-6"></i>
-            <h2 class="text-3xl font-bold text-white mb-4">Your Privacy is Our Priority</h2>
-            <p class="text-gray-400 max-w-2xl mx-auto mb-8">
-                Mika AI processes 99% of tasks offline using your computer's hardware. We do not collect, store, or sell your chat history, generated images, or personal files. All generated content is saved locally in your 'generated_outputs' folder.
+    <!-- ===================== PRIVACY ===================== -->
+    <section id="privacy" class="py-20 sm:py-24 bg-slate-100/60 dark:bg-black/30 border-y border-slate-200/70 dark:border-white/5">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12 reveal">
+                <div class="w-16 h-16 mx-auto rounded-3xl bg-primary/15 text-primary flex items-center justify-center text-3xl mb-6">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <p class="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3">Privacy Policy</p>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-5">Your Privacy is Our Priority</h2>
+                <p class="text-slate-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
+                    Mika AI processes 99% of tasks offline using your computer's hardware. We do not collect, store or sell your chat history, generated images or personal files. All generated content is saved locally in your <code class="px-1.5 py-0.5 rounded bg-slate-200/80 dark:bg-white/10 text-xs">generated_outputs</code> folder.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left mb-10">
+                <div class="glass-card p-7 rounded-[2rem] reveal">
+                    <div class="w-12 h-12 bg-primary/15 text-primary rounded-2xl flex items-center justify-center text-xl mb-5">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3 class="text-base sm:text-lg font-bold mb-2">What We Store</h3>
+                    <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed">Nothing personal. Your prompts, chats and media stay on your device. We retain only anonymous, aggregated usage statistics to diagnose crashes and improve stability.</p>
+                </div>
+
+                <div class="glass-card p-7 rounded-[2rem] reveal" style="transition-delay: .07s;">
+                    <div class="w-12 h-12 bg-blue-500/15 text-blue-600 dark:text-blue-400 rounded-2xl flex items-center justify-center text-xl mb-5">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <h3 class="text-base sm:text-lg font-bold mb-2">Optional Cloud Features</h3>
+                    <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed">Cloud API features (such as the Anthropic Claude API) are strictly opt-in. Nothing is transmitted off your PC unless you enable them, and they can be disabled at any time.</p>
+                </div>
+
+                <div class="glass-card p-7 rounded-[2rem] reveal" style="transition-delay: .14s;">
+                    <div class="w-12 h-12 bg-purple-500/15 text-purple-600 dark:text-purple-400 rounded-2xl flex items-center justify-center text-xl mb-5">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <h3 class="text-base sm:text-lg font-bold mb-2">Your Rights</h3>
+                    <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed">Delete your local data at any time by removing the Mika AI folder. For any privacy request, email <a href="mailto:admin@mika-ai.xyz" class="font-semibold text-primary hover:underline">admin@mika-ai.xyz</a>.</p>
+                </div>
+            </div>
+
+            <p class="text-center text-xs text-slate-400 dark:text-gray-500">
+                Last updated: October 2026 &middot; Questions? <a href="mailto:admin@mika-ai.xyz" class="hover:text-primary transition">admin@mika-ai.xyz</a>
             </p>
         </div>
-    </div>
+    </section>
 
-    <div id="contact" class="pt-20 pb-10 bg-darker border-t border-white/5">
-        <div class="max-w-4xl mx-auto px-4 text-center">
-            <h2 class="text-3xl font-bold text-white mb-8">Contact & Support</h2>
-            
-            <div class="flex flex-wrap justify-center gap-6 mb-8">
-                <a href="mailto:trndggamers@gmail.com" class="glass-card px-8 py-4 rounded-full flex items-center gap-3 text-white hover:text-primary transition">
-                    <i class="fas fa-envelope"></i> trndggamers@gmail.com
+    <!-- ===================== CONTACT ===================== -->
+    <section id="contact" class="pt-20 sm:pt-24 pb-10">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+            <div class="mb-10 reveal">
+                <p class="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3">Get in touch</p>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Contact &amp; Support</h2>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-4 sm:gap-6 mb-8 reveal">
+                <a href="mailto:admin@mika-ai.xyz" class="glass-card px-7 py-4 rounded-full flex items-center gap-3 text-sm sm:text-base font-semibold hover:text-primary transition">
+                    <i class="fas fa-envelope text-primary"></i> admin@mika-ai.xyz
                 </a>
-                <a href="https://wa.me/8801729728454" target="_blank" class="glass-card px-8 py-4 rounded-full flex items-center gap-3 text-white hover:text-green-500 transition">
-                    <i class="fab fa-whatsapp text-xl"></i> Chat on WhatsApp
+                <a href="https://wa.me/8801729728454" target="_blank" rel="noopener" class="glass-card px-7 py-4 rounded-full flex items-center gap-3 text-sm sm:text-base font-semibold hover:text-emerald-600 dark:hover:text-green-500 transition">
+                    <i class="fab fa-whatsapp text-xl text-emerald-500"></i> Chat on WhatsApp
                 </a>
             </div>
 
-            <div class="flex justify-center gap-6 mb-12">
-                <a href="https://x.com/kazi_abir_labs" target="_blank" class="w-12 h-12 rounded-full glass-card flex items-center justify-center text-white hover:bg-black hover:border-gray-600 transition transform hover:scale-110">
-                    <i class="fab fa-twitter text-xl"></i>
+            <div class="flex justify-center gap-4 mb-14 reveal">
+                <a href="https://x.com/kazi_abir_labs" target="_blank" rel="noopener" aria-label="X (Twitter)" class="w-12 h-12 rounded-full glass-card flex items-center justify-center hover:bg-slate-900 hover:text-white dark:hover:bg-black transition transform hover:scale-110">
+                    <i class="fab fa-x-twitter text-lg"></i>
                 </a>
-                <a href="https://www.instagram.com/kazi_abir_dev?igsh=NzNlMmQyZG5pZXJi" target="_blank" class="w-12 h-12 rounded-full glass-card flex items-center justify-center text-white hover:bg-pink-600 hover:border-pink-500 transition transform hover:scale-110">
-                    <i class="fab fa-instagram text-xl"></i>
-                </a>
-            </div>
-
-            <div class="glass-card p-8 rounded-3xl max-w-2xl mx-auto mb-16 bg-gradient-to-r from-gray-900 to-gray-800">
-                <p class="text-gray-300 mb-6">"This is a student project built with passion. If you love Mika AI, consider buying me a coffee to support future updates!"</p>
-                <a href="https://www.buymeacoffee.com/Mika_AI" target="_blank" class="inline-flex items-center bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-8 rounded-full transition transform hover:scale-105">
-                    <img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="Buy me a coffee" class="w-6 h-6 mr-2">
-                    Buy Me a Coffee
+                <a href="https://www.instagram.com/kazi_abir_dev?igsh=NzNlMmQyZG5pZXJi" target="_blank" rel="noopener" aria-label="Instagram" class="w-12 h-12 rounded-full glass-card flex items-center justify-center hover:bg-pink-600 hover:text-white hover:border-pink-500 transition transform hover:scale-110">
+                    <i class="fab fa-instagram text-lg"></i>
                 </a>
             </div>
 
-            <div class="text-gray-600 text-sm border-t border-gray-800 pt-8">
-                <p>&copy; 2026 Mika AI. All Rights Reserved.</p>
-                <p class="mt-2">Developed by <span class="text-gray-400">Kazi Abir</span></p>
-                <div class="mt-4 space-x-4">
-                    <a href="https://drive.google.com/file/d/1vkcZ2SwqPo5jz1rkP_F1lla3odz-9BcX/view?usp=sharing" class="hover:text-white transition">Download</a> | 
-                    <a href="#about-soft" class="hover:text-white transition">Privacy Policy</a> | 
-                    <a href="#contact" class="hover:text-white transition">Contact</a>
+            <div class="glass-card p-8 sm:p-10 rounded-[2rem] max-w-2xl mx-auto reveal">
+                <i class="fas fa-quote-left text-2xl text-primary/50 mb-4"></i>
+                <p class="text-base sm:text-lg text-slate-600 dark:text-gray-300 mb-7 leading-relaxed">This is a student project built with passion. If Mika AI helps you, consider buying me a coffee to support future updates.</p>
+                <a href="https://www.buymeacoffee.com/Mika_AI" target="_blank" rel="noopener"
+                   class="inline-flex items-center bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-900 font-bold py-3.5 px-9 rounded-full transition transform hover:scale-105 shadow-lg shadow-amber-500/25">
+                    <i class="fas fa-mug-hot mr-2"></i> Buy Me a Coffee
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== FOOTER ===================== -->
+    <footer class="pt-14 pb-12 border-t border-slate-200/70 dark:border-white/5 mt-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-10 mb-12">
+
+                <div class="sm:col-span-1">
+                    <div class="flex items-center gap-3 mb-4">
+                        <img src="logo.png" alt="Mika AI Logo" class="w-9 h-9 rounded-xl" loading="lazy">
+                        <span class="font-extrabold text-xl tracking-tight">Mika AI</span>
+                    </div>
+                    <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed">Local-first AI for everyone &mdash; expanding with Cloud API integrations for advanced, cloud-backed intelligence.</p>
+                </div>
+
+                <div>
+                    <h4 class="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-4">Product</h4>
+                    <ul class="space-y-3 text-sm text-slate-500 dark:text-gray-400">
+                        <li><a href="#features" class="hover:text-primary transition">Features</a></li>
+                        <li><a href="#requirements" class="hover:text-primary transition">System Requirements</a></li>
+                        <li><a href="https://drive.google.com/file/d/1vkcZ2SwqPo5jz1rkP_F1lla3odz-9BcX/view?usp=sharing" target="_blank" rel="noopener" class="hover:text-primary transition">Download v1.0</a></li>
+                        <li><a href="#products" class="hover:text-primary transition">Zerixa Studio</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-4">Company</h4>
+                    <ul class="space-y-3 text-sm text-slate-500 dark:text-gray-400">
+                        <li><a href="#about" class="hover:text-primary transition">About</a></li>
+                        <li><a href="#privacy" class="hover:text-primary transition">Privacy Policy</a></li>
+                        <li><a href="#contact" class="hover:text-primary transition">Contact</a></li>
+                        <li><a href="mailto:admin@mika-ai.xyz" class="hover:text-primary transition">admin@mika-ai.xyz</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 border-t border-slate-200/70 dark:border-white/5 text-xs sm:text-sm text-slate-400 dark:text-gray-500">
+                <p>&copy; <span id="year">2026</span> Mika AI. All rights reserved.</p>
+                <p>Developed by <span class="text-slate-600 dark:text-gray-400 font-semibold">Kazi Abir</span></p>
+                <div class="flex items-center gap-4">
+                    <a href="#privacy" class="hover:text-primary transition">Privacy</a>
+                    <span class="opacity-40">|</span>
+                    <a href="#contact" class="hover:text-primary transition">Contact</a>
+                    <span class="opacity-40">|</span>
+                    <a href="#top" class="hover:text-primary transition">Back to top</a>
                 </div>
             </div>
         </div>
-    </div>
+    </footer>
 
+    <script>
+        (function () {
+            'use strict';
+
+            /* ---------- Theme toggle ---------- */
+            var root = document.documentElement;
+            var toggle = document.getElementById('themeToggle');
+            var themeMeta = document.querySelector('meta[name="theme-color"]');
+
+            function syncTheme() {
+                var isDark = root.classList.contains('dark');
+                if (toggle) toggle.setAttribute('aria-checked', String(isDark));
+                if (themeMeta) themeMeta.setAttribute('content', isDark ? '#020617' : '#f8fafc');
+            }
+
+            if (toggle) {
+                toggle.addEventListener('click', function () {
+                    root.classList.toggle('dark');
+                    try {
+                        localStorage.setItem('mika-theme', root.classList.contains('dark') ? 'dark' : 'light');
+                    } catch (e) {}
+                    syncTheme();
+                });
+            }
+            syncTheme();
+
+            /* ---------- Mobile menu ---------- */
+            var menuBtn = document.getElementById('menuBtn');
+            var menuIcon = document.getElementById('menuIcon');
+            var mobileMenu = document.getElementById('mobileMenu');
+
+            function closeMenu() {
+                if (!mobileMenu) return;
+                mobileMenu.classList.add('hidden');
+                if (menuIcon) menuIcon.className = 'fas fa-bars';
+                if (menuBtn) menuBtn.setAttribute('aria-expanded', 'false');
+            }
+
+            if (menuBtn && mobileMenu) {
+                menuBtn.addEventListener('click', function () {
+                    var hidden = mobileMenu.classList.toggle('hidden');
+                    if (menuIcon) menuIcon.className = hidden ? 'fas fa-bars' : 'fas fa-xmark';
+                    menuBtn.setAttribute('aria-expanded', String(!hidden));
+                });
+                Array.prototype.forEach.call(document.querySelectorAll('.mobile-link'), function (link) {
+                    link.addEventListener('click', closeMenu);
+                });
+            }
+
+            /* ---------- Navbar elevation on scroll ---------- */
+            var navbar = document.getElementById('navbar');
+            function onScroll() {
+                if (!navbar) return;
+                if (window.scrollY > 24) {
+                    navbar.classList.add('shadow-2xl');
+                    navbar.style.top = '0.5rem';
+                } else {
+                    navbar.classList.remove('shadow-2xl');
+                    navbar.style.top = '1rem';
+                }
+                setActiveLink();
+            }
+
+            /* ---------- Active nav link highlighting ---------- */
+            var sections = ['about', 'features', 'requirements', 'products', 'contact'];
+            function setActiveLink() {
+                var current = '';
+                sections.forEach(function (id) {
+                    var el = document.getElementById(id);
+                    if (!el) return;
+                    var rect = el.getBoundingClientRect();
+                    if (rect.top <= 160 && rect.bottom >= 160) current = id;
+                });
+                Array.prototype.forEach.call(document.querySelectorAll('.nav-link'), function (link) {
+                    var href = link.getAttribute('href') || '';
+                    link.classList.toggle('active', href === '#' + current);
+                });
+            }
+
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
+
+            /* ---------- Scroll reveal ---------- */
+            var revealEls = document.querySelectorAll('.reveal');
+            if ('IntersectionObserver' in window) {
+                var observer = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+
+                Array.prototype.forEach.call(revealEls, function (el) { observer.observe(el); });
+            } else {
+                Array.prototype.forEach.call(revealEls, function (el) { el.classList.add('is-visible'); });
+            }
+
+            /* ---------- Footer year ---------- */
+            var yearEl = document.getElementById('year');
+            if (yearEl) yearEl.textContent = new Date().getFullYear();
+        })();
+    </script>
 </body>
 </html>
